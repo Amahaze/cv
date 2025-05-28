@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <title>Triunghiuri Spațiate Uniform (0.5u)</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    svg {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+    }
+    polygon {
+      cursor: pointer;
+      stroke: white;
+      stroke-width: 1.5;
+      transition: transform 0.3s ease;
+    }
+    polygon:hover {
+      filter: brightness(1.15);
+      transform: scale(1.02);
+      transform-origin: center;
+    }
+  </style>
+</head>
+<body>
+
+<svg viewBox="0 0 100 100" preserveAspectRatio="none">
+  <!-- Spațiu între triunghiuri din centru redus la 0.5 unități -->
+
+  <!-- Triunghi 1 - stânga jos -->
+  <polygon points="2,2 49.75,98 2,98" fill="#a52a2a" onclick="alert('Triunghi 1')" />
+
+  <!-- Triunghi 2 - sus stânga -->
+  <polygon points="2,2 49.75,98 49.75,2" fill="#00fa9a" onclick="alert('Triunghi 2')" />
+
+  <!-- Triunghi 3 - sus dreapta -->
+  <polygon points="50.25,2 50.25,98 98,2" fill="#663399" onclick="alert('Triunghi 3')" />
+
+  <!-- Triunghi 4 - dreapta jos -->
+  <polygon points="50.25,98 98,2 98,98" fill="#c2185b" onclick="alert('Triunghi 4')" />
+</svg>
+
+</body>
+</html>

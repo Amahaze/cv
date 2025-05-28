@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9400D3;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#4B0082;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9400D3;stop-opacity:1" />
+    </linearGradient>
+    <filter id="neonGlow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+      <feFlood flood-color="#9400D3" flood-opacity="0.5" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <path d="M85 25H60l-10-10H25c-5.5 0-10 4.5-10 10v50c0 5.5 4.5 10 10 10h60c5.5 0 10-4.5 10-10V35c0-5.5-4.5-10-10-10z" 
+        fill="url(#neonGradient)" 
+        filter="url(#neonGlow)" 
+        stroke="#FFFFFF" 
+        stroke-width="1"
+  />
+  <path d="M85 30H25c-5.5 0-10 4.5-10 10v35c0 5.5 4.5 10 10 10h60c5.5 0 10-4.5 10-10V40c0-5.5-4.5-10-10-10z" 
+        fill="url(#neonGradient)" 
+        filter="url(#neonGlow)" 
+        stroke="#FFFFFF" 
+        stroke-width="1"
+        opacity="0.7"
+  />
+</svg>
