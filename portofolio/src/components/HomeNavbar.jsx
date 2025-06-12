@@ -9,7 +9,7 @@ const NavContainer = styled(motion.nav)`
   align-items: center;
   justify-content: space-between;
   padding: 20px 30px;
-  background: ${props => props.isScrolled ? 'linear-gradient(135deg, rgba(75, 0, 130, 1) 20%, rgba(148, 0, 211, 0) 100%)' : 'linear-gradient(to bottom, #000 80%, rgba(0, 0, 0, 0))'};  
+  background: ${props => props.isScrolled ? 'linear-gradient(135deg, rgba(75, 0, 130, 1) 20%, rgba(148, 0, 211, 0) 100%)' : 'linear-gradient(90deg, #000000 0%, #000000 60%, #ffffff 100%)'};
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   opacity: ${props => props.isScrolled ? '0.95' : '1'};
   position: fixed;
@@ -40,6 +40,12 @@ const NavContainer = styled(motion.nav)`
       transform: translateY(0);
     }
   }
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    background: rgba(0, 0, 0, 0.95); /* Simplified background for mobile */
+    padding: 15px 20px; /* Adjusted padding for mobile */
+    z-index: 100; /* Ensure navbar stays on top */
+  }
 `;
 
 // Logo container with animation
@@ -47,6 +53,10 @@ const LogoContainer = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    z-index: 30; /* Ensure logo stays above mobile menu */
+  }
 `;
 
 // Icon for logo
@@ -54,6 +64,10 @@ const LogoIcon = styled.div`
   font-size: 30px;
   margin-right: 10px;
   color: #fff;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 34px; /* Larger icon on mobile */
+  }
 `;
 
 // Text that slides in from the left
@@ -64,14 +78,29 @@ const LogoText = styled.span`
   opacity: ${props => props.slideIn ? '1' : '0'};
   transition: transform 1s ease, opacity 1s ease;
   color: #fff;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 24px; /* Larger text on mobile */
+  }
 `;
 
-// Navigation buttons container
+// Navigation buttons container for desktop
 const NavButtons = styled.div`
   display: flex;
+  align-items: center;
   gap: 120px; /* Space between buttons */
   padding-left: 50px;
   padding-right: 80px;
+  z-index: 10;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: none; /* Hide desktop navigation on mobile */
+  }
+`;
+
+// Mobile menu container
+const MobileMenu = styled.div`
+  display: none;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
@@ -79,14 +108,30 @@ const NavButtons = styled.div`
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.95);
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-    padding: 1rem 2rem;
-    gap: 15px;
+    width: 100%; /* Take full width of screen */
+    height: 100vh;
+    background-color: #000000; /* Solid black background */
+    z-index: 20;
+    padding-top: 80px;
+    transform: ${({ isOpen }) => (isOpen ? 'translateX(0)' : 'translateX(-100%)')};
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  }
+`;
+
+// Overlay for mobile menu
+const MobileMenuOverlay = styled.div`
+  display: none;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8); /* Darker overlay for better contrast */
+    z-index: 15;
   }
 `;
 
@@ -103,7 +148,66 @@ const NavItem = styled.div`
   z-index: 2;
 `;
 
-// Circular button wrapper with link
+// Mobile link wrapper - MOVED BEFORE MobileNavItem
+const MobileNavLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the content */
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 500;
+  width: 100%; /* Take full width */
+  transition: all 0.3s ease; /* Add transition for smooth hover effect */
+  
+  &:hover {
+    color: #ff4d5a; /* Brighter color on hover */
+    transform: scale(1.05); /* Slight scale effect on hover */
+    
+    /* Make both icon and text change color on hover */
+    & > * {
+      color: #ff4d5a;
+    }
+  }
+  
+  &.active {
+    color: #ff4d5a;
+    
+    /* Make both icon and text change color when active */
+    & > * {
+      color: #ff4d5a;
+    }
+  }
+`;
+
+// Mobile navigation item
+const MobileNavItem = styled.div`
+  width: 100%;
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  text-align: center; /* Center text */
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Slightly lighter on hover */
+    
+    /* Apply hover effect to the link and all its children when hovering over the item */
+    & > ${MobileNavLink} {
+      color: #ff4d5a;
+      transform: scale(1.05);
+      
+      & > * {
+        color: #ff4d5a;
+      }
+    }
+  }
+  
+  &.active {
+    background-color: rgba(255, 77, 90, 0.2); /* Slightly more visible active state */
+  }
+`;
+
+// Circular button wrapper with link for desktop
 const NavIconWrapper = styled(Link)`
   display: flex;
   align-items: center;
@@ -130,7 +234,15 @@ const NavIcon = styled.div`
   color: ${props => props.isScrolled ? '#FFFFFF' : '#333'};
 `;
 
-// Text that appears on hover
+// Mobile menu icon
+const MobileNavIcon = styled.div`
+  font-size: 20px;
+  margin-right: 15px;
+  color: inherit; /* Inherit color from parent for hover effects */
+  transition: all 0.3s ease; /* Add transition for smooth hover effect */
+`;
+
+// Text that appears on hover for desktop
 const NavText = styled.span`
   position: absolute;
   left: 100%;
@@ -161,9 +273,16 @@ const MobileMenuButton = styled.button`
   background: none;
   border: none;
   color: #fff;
-  font-size: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
-  z-index: 2;
+  z-index: 30; /* Increased z-index to ensure it appears above other elements */
+  transition: all 0.3s ease;
+  padding: 10px;
+  
+  &:hover {
+    color: #ff4d5a;
+    transform: scale(1.2);
+  }
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: block;
@@ -244,47 +363,82 @@ const HomeNavbar = () => {
         {isOpen ? <FaTimes /> : <FaBars />}
       </MobileMenuButton>
       
-      <NavButtons isOpen={isOpen}>
+      {/* Desktop Navigation */}
+      <NavButtons>
         {/* Home button */}
         <NavItem>
-          <NavIconWrapper to="/">
-            <NavIcon>
+          <NavIconWrapper to="/" isScrolled={isScrolled} className={location.pathname === '/' ? 'active' : ''}>
+            <NavIcon isScrolled={isScrolled}>
               <FaHome />
             </NavIcon>
+            <NavText isScrolled={isScrolled}>Home</NavText>
           </NavIconWrapper>
-          <NavText>Home</NavText>
         </NavItem>
         
         {/* About button */}
         <NavItem>
-          <NavIconWrapper to="/about">
-            <NavIcon>
+          <NavIconWrapper to="/about" isScrolled={isScrolled} className={location.pathname === '/about' ? 'active' : ''}>
+            <NavIcon isScrolled={isScrolled}>
               <FaUser />
             </NavIcon>
+            <NavText isScrolled={isScrolled}>About</NavText>
           </NavIconWrapper>
-          <NavText>About</NavText>
         </NavItem>
         
         {/* Projects button */}
         <NavItem>
-          <NavIconWrapper to="/projects">
-            <NavIcon>
+          <NavIconWrapper to="/projects" isScrolled={isScrolled} className={location.pathname === '/projects' ? 'active' : ''}>
+            <NavIcon isScrolled={isScrolled}>
               <FaCode />
             </NavIcon>
+            <NavText isScrolled={isScrolled}>Projects</NavText>
           </NavIconWrapper>
-          <NavText>Projects</NavText>
         </NavItem>
         
         {/* Contact button */}
         <NavItem>
-          <NavIconWrapper to="/contact">
-            <NavIcon>
+          <NavIconWrapper to="/contact" isScrolled={isScrolled} className={location.pathname === '/contact' ? 'active' : ''}>
+            <NavIcon isScrolled={isScrolled}>
               <FaEnvelope />
             </NavIcon>
+            <NavText isScrolled={isScrolled}>Contact</NavText>
           </NavIconWrapper>
-          <NavText>Contact</NavText>
         </NavItem>
       </NavButtons>
+      
+      {/* Mobile Menu Overlay */}
+      <MobileMenuOverlay isOpen={isOpen} onClick={toggleMenu} />
+      
+      {/* Mobile Menu */}
+      <MobileMenu isOpen={isOpen}>
+        <MobileNavItem className={location.pathname === '/' ? 'active' : ''}>
+          <MobileNavLink to="/" onClick={toggleMenu}>
+            <MobileNavIcon><FaHome /></MobileNavIcon>
+            Home
+          </MobileNavLink>
+        </MobileNavItem>
+        
+        <MobileNavItem className={location.pathname === '/about' ? 'active' : ''}>
+          <MobileNavLink to="/about" onClick={toggleMenu}>
+            <MobileNavIcon><FaUser /></MobileNavIcon>
+            About
+          </MobileNavLink>
+        </MobileNavItem>
+        
+        <MobileNavItem className={location.pathname === '/projects' ? 'active' : ''}>
+          <MobileNavLink to="/projects" onClick={toggleMenu}>
+            <MobileNavIcon><FaCode /></MobileNavIcon>
+            Projects
+          </MobileNavLink>
+        </MobileNavItem>
+        
+        <MobileNavItem className={location.pathname === '/contact' ? 'active' : ''}>
+          <MobileNavLink to="/contact" onClick={toggleMenu}>
+            <MobileNavIcon><FaEnvelope /></MobileNavIcon>
+            Contact
+          </MobileNavLink>
+        </MobileNavItem>
+      </MobileMenu>
     </NavContainer>
   );
 };

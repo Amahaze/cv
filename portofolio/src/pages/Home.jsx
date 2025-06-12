@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaDesktop, FaMobileAlt, FaPencilRuler } from 'react-icons/fa';
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 // Hero Section (Block 1)
 const HeroSection = styled.section`
@@ -16,12 +18,22 @@ const HeroSection = styled.section`
   gap: 4rem;
   clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
   z-index: 2;
+  background: linear-gradient(90deg, #000000 0%, #000000 60%, #ffffff 100%);
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     flex-direction: column;
-    padding-top: 8rem;
+    padding: 8rem 1.5rem 14rem; /* Increased bottom padding */
     text-align: center;
-    gap: 2rem;
+    gap: 10rem; /* Increased gap */
+    min-height: auto;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    flex-direction: column;
+    padding: 6rem 1rem 10rem;
+    text-align: center;
+    gap: 10rem;
+    min-height: auto;
   }
 `;
 
@@ -31,51 +43,13 @@ const HeroContent = styled.div`
   max-width: 600px;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    margin-bottom: 3rem;
-  }
-`;
-
-const HeroTitle = styled(motion.h1)`
-  font-family: ${props => props.theme.fonts.heading};
-  font-size: 4rem;
-  font-weight: 900;
-  letter-spacing: 0.05em;
-  position: relative;
-  z-index: 2;
-  background: linear-gradient(45deg, #000 0%, #fff 50%, #000 100%);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 2px rgba(255, 255, 255, 0.7);
-  animation: gradientShift 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  border: 4px solid transparent;
-  padding: 0.2em 0.4em;
-  border-image: linear-gradient(45deg, #fff, #000) 1;
-  animation: gradientShift 6s cubic-bezier(0.4, 0, 0.2, 1) infinite, borderShift 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  margin-bottom: 2rem;
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 3rem;
+    max-width: 500px;
+    margin: 0 auto;
   }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 2.5rem;
-  }
-  
-  @keyframes gradientShift {
-    0% { background-position: 0% 50% }
-    25% { background-position: 50% 100% }
-    50% { background-position: 100% 50% }
-    75% { background-position: 50% 0% }
-    100% { background-position: 0% 50% }
-  }
-
-  @keyframes borderShift {
-    0% { border-image: linear-gradient(45deg, #fff, transparent, #000) 1; border-width: 4px; }
-    25% { border-image: linear-gradient(45deg, #000, #fff, transparent) 1; border-width: 5px; }
-    50% { border-image: linear-gradient(45deg, transparent, #000, #fff) 1; border-width: 4px; }
-    75% { border-image: linear-gradient(45deg, #fff, transparent, #000) 1; border-width: 5px; }
-    100% { border-image: linear-gradient(45deg, #000, #fff, transparent) 1; border-width: 4px; }
+    max-width: 100%;
+    margin: 0 auto;
   }
 `;
 
@@ -84,6 +58,18 @@ const HeroSubtitle = styled(motion.p)`
   margin-bottom: 3rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.8);
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+    padding: 0 1rem;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    padding: 0 0.5rem;
+  }
 `;
 
 const HeroButton = styled(motion.a)`
@@ -107,6 +93,19 @@ const HeroButton = styled(motion.a)`
   text-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
   animation: gradientShift 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   margin-top: 1rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1.3rem;
+    padding: 0.7rem 1.3rem;
+    margin-top: 0.5rem;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 1.1rem;
+    padding: 0.6rem 1.2rem;
+    margin-top: 0.5rem;
+    border-width: 1px;
+  }
   
   @keyframes borderPrism {
     0% { border-image: linear-gradient(45deg, #fff, transparent, #000) 1 }
@@ -135,7 +134,41 @@ const HeroImageContainer = styled.div`
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     width: 100%;
-    height: 500px;
+    height: 400px;
+    margin-top: 3rem; /* Increased margin-top */
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    width: 100%;
+    height: 300px;
+    margin-top: 3rem;
+  }
+`;
+
+const CarouselContainer = styled.div`
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  z-index: 2;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    width: 300px; /* Further reduced size */
+    height: 300px; /* Further reduced size */
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    width: 230px;
+    height: 230px;
+  }
+
+  .carousel .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
   }
 `;
 
@@ -166,7 +199,7 @@ const ProfileImage = styled(motion.div)`
   position: absolute;
   width: 600px;
   height: 600px;
-  background-image: url('/colea.png');
+  background-image: url('/nicolae.jpg');
   background-size: cover;
   background-position: center;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
@@ -223,6 +256,16 @@ const ServicesSection = styled.section`
     background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 100%);
     pointer-events: none;
   }
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 11rem 0 6rem; /* Increased top padding */
+    margin-top: -80px; /* Adjusted margin-top */
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 8rem 0 5rem;
+    margin-top: -40px;
+  }
 `;
 
 const ServicesGrid = styled.div`
@@ -266,8 +309,17 @@ const ServiceCard = styled(motion.div)`
   }
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 3rem 2rem;
-    min-height: 250px;
+    padding: 3rem 1.5rem;
+    min-height: 220px;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 2.5rem 1rem;
+    min-height: 200px;
+    
+    &:nth-child(2), &:nth-child(3) {
+      margin-top: -30px;
+    }
   }
 `;
 
@@ -276,6 +328,15 @@ const ServiceTitle = styled.h3`
   margin-bottom: 1rem;
   color: white;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1.6rem;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+  }
 `;
 
 const ServiceDescription = styled.p`
@@ -283,7 +344,72 @@ const ServiceDescription = styled.p`
   line-height: 1.6;
   max-width: 600px;
   margin: 0 auto;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    max-width: 500px;
+    font-size: 0.95rem;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    max-width: 100%;
+    font-size: 0.9rem;
+    padding: 0 0.5rem;
+  }
 `;
+
+const HeroTitle = styled(motion.h1)`
+  font-family: ${props => props.theme.fonts.heading};
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(45deg, #000 0%, #fff 50%, #000 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.7);
+  animation: gradientShift 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  border: 4px solid transparent;
+  padding: 0.2em 0.4em;
+  border-image: linear-gradient(45deg, #fff, #000) 1;
+  animation: gradientShift 6s cubic-bezier(0.4, 0, 0.2, 1) infinite, borderShift 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  margin-bottom: 2rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 2.5rem;
+    padding: 0.15em 0.3em;
+    border-width: 3px;
+    white-space: nowrap;
+    margin-bottom: 2.5rem;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 2rem;
+    padding: 0.1em 0.25em;
+    border-width: 2px;
+    margin-bottom: 1.5rem;
+    white-space: nowrap;
+  }
+  
+  @keyframes gradientShift {
+    0% { background-position: 0% 50% }
+    25% { background-position: 50% 100% }
+    50% { background-position: 100% 50% }
+    75% { background-position: 50% 0% }
+    100% { background-position: 0% 50% }
+  }
+
+  @keyframes borderShift {
+    0% { border-image: linear-gradient(45deg, #fff, transparent, #000) 1; border-width: 4px; }
+    25% { border-image: linear-gradient(45deg, #000, #fff, transparent) 1; border-width: 5px; }
+    50% { border-image: linear-gradient(45deg, transparent, #000, #fff) 1; border-width: 4px; }
+    75% { border-image: linear-gradient(45deg, #fff, transparent, #000) 1; border-width: 5px; }
+    100% { border-image: linear-gradient(45deg, #000, #fff, transparent) 1; border-width: 4px; }
+  }
+`;
+
+
 
 const ServiceIcon = styled.div`
   font-size: 2.5rem;
@@ -293,24 +419,10 @@ const ServiceIcon = styled.div`
   svg {
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   }
-`;
-
-// Quote Section (Block 3)
-const QuoteSection = styled.section`
-  position: relative;
-  padding: 7.5rem 2rem;
-  text-align: center;
-  overflow: hidden;
   
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
-    z-index: 1;
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 2rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -322,6 +434,28 @@ const VideoBackground = styled.video`
   height: 100%;
   object-fit: cover;
   z-index: 0;
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+`;
+
+const QuoteSection = styled.section`
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+  overflow: hidden;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 4rem 1.5rem;
+    min-height: 80vh;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 3rem 1rem;
+    min-height: 70vh;
+  }
 `;
 
 const QuoteContainer = styled(motion.div)`
@@ -343,6 +477,14 @@ const QuoteContainer = styled(motion.div)`
     flex-direction: column;
     padding: 2rem;
     gap: 2rem;
+    max-width: 600px;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    flex-direction: column-reverse;
+    padding: 1.5rem;
+    gap: 2rem;
+    border-width: 1px;
   }
 `;
 
@@ -375,9 +517,40 @@ const QuoteText = styled.blockquote`
     right: -2rem;
   }
   
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    
+    &::before {
+      top: -2rem;
+      left: -1.5rem;
+      font-size: 4rem;
+    }
+    
+    &::after {
+      bottom: -3.5rem;
+      right: -1.5rem;
+      font-size: 4rem;
+    }
+  }
+  
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     text-align: center;
+    margin-bottom: 0;
+    padding: 0 1.5rem;
+    
+    &::before {
+      top: -1.5rem;
+      left: 0.5rem;
+      font-size: 3rem;
+    }
+    
+    &::after {
+      bottom: -2.5rem;
+      right: 0.5rem;
+      font-size: 3rem;
+    }
   }
 `;
 
@@ -490,13 +663,35 @@ const Home = () => {
         </HeroContent>
         
         <HeroImageContainer>
-          <HeroImage />
-          <ProfileImage 
+          <CarouselContainer
+            as={motion.div}
             initial="hidden"
             animate={controlsHero}
             variants={fadeInRight}
-            whileHover={{ scale: 1.05 }}
-          />
+            whileHover={{ scale: 1.02 }}
+          >
+            <Carousel
+              autoPlay
+              infiniteLoop
+              showStatus={false}
+              showThumbs={false}
+              interval={3000}
+              transitionTime={500}
+              showArrows={true}
+              dynamicHeight={false}
+              emulateTouch={true}
+            >
+              <div>
+                <img src="/nicolae.jpg" alt="Nicolae 1" />
+              </div>
+              <div>
+                <img src="/nicolae1.jpg" alt="Nicolae 2" />
+              </div>
+              <div>
+                <img src="/nicola2.jpg" alt="Nicolae 3" />
+              </div>
+            </Carousel>
+          </CarouselContainer>
         </HeroImageContainer>
       </HeroSection>
       
