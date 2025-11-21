@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { Icon } from '@iconify/react';
+import { FiHome, FiUser, FiFolder, FiMail } from 'react-icons/fi';
 
 const NavContainer = styled(motion.nav)`
   display: flex;
@@ -176,28 +176,28 @@ const ContactNavbar = () => {
       <NavLinks isOpen={isOpen}>
         <NavItem>
           <NavLink to="/" className={location.pathname === '/' ? 'active' : ''}>
-            <Icon icon="feather:home" />
+            <FiHome />
             <span>Home</span>
           </NavLink>
         </NavItem>
         
         <NavItem>
           <NavLink to="/about" className={location.pathname === '/about' ? 'active' : ''}>
-            <Icon icon="feather:user" />
+            <FiUser />
             <span>About</span>
           </NavLink>
         </NavItem>
         
         <NavItem>
           <NavLink to="/projects" className={location.pathname === '/projects' ? 'active' : ''}>
-            <Icon icon="feather:folder" />
+            <FiFolder />
             <span>Projects</span>
           </NavLink>
         </NavItem>
         
         <NavItem>
           <NavLink to="/contact" className={location.pathname === '/contact' ? 'active' : ''}>
-            <Icon icon="feather:mail" />
+            <FiMail />
             <span>Contact</span>
           </NavLink>
         </NavItem>
